@@ -64,11 +64,6 @@ void setup() {
   pinMode(Din1, OUTPUT);
   pinMode(Din2, OUTPUT);
 
-  //  pinMode(Ein1, OUTPUT);
-  //  pinMode(Ein2, OUTPUT);
-  //
-  //  pinMode(Fin1, OUTPUT);
-  //  pinMode(Fin2, OUTPUT);
   SetServo();
 }
 
