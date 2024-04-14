@@ -1,5 +1,5 @@
 this code for rescue robot
-#
+
 Precautions
 1. make sure your joystick connect with computer
 2. make sure your device connect the same wifi (pi and computer must be connect to the same wifi)
@@ -7,7 +7,7 @@ Precautions
 4. dowload my coed in your computer and your raspberry pi
 
 Set up
-
+#
     On computer: # strat server.py
         1. open cmd
         2. run code server.py # in compettion if it's not necessary. i am not recommend to stop this code Because ip are overlapped
