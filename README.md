@@ -6,7 +6,7 @@ Precautions
 3. cheak ip in Pi and computer in my code
 
 Set up
-    On computer:
+    On computer: # strat server.py
         1. open cmd
         2. run code server.py # in compettion if it's not necessary. i am not recommend to stop this code Because ip are overlapped
             - cd your file addr/Rescue_Fn_test/ # open folder
