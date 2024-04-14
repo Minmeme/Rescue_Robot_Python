@@ -25,7 +25,7 @@ Set up
                 - python3 main-cam.py # this code for simple cam(no imagepro)
                 - python3 main-qr.py # this code for Qrcode detect
                 # if you run code is passes in output it have link to web(show camera) plz open link to see camera
-                # if you run code is passes plz ctrl+C to let pi connect to server.py but web is not off
+                # if you run code is passes plz ctrl+C to let pi connect to server.
                 
 
                 # if have error plz read error and edit it 
