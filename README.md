@@ -18,14 +18,13 @@ Set up
         2. connect Pi # use ssh
             - ssh <username>@<Pi-ip> -p port 
         3. run code
-            - cd Documents/Rescue_P-owen/fontend_pi # open folder
+            - cd your file addr # open folder
             - choose the code to run # if you want to run any code plz ctrl+C(stop code) and run new code
                 - python3 main-cam.py # this code for simple cam(no imagepro)
                 - python3 main-qr.py # this code for Qrcode detect
                 # if you run code is passes in output it have link to web(show camera) plz open link to see camera
                 # if you run code is passes plz ctrl+C to let pi connect to server.
                 
-
                 # if have error plz read error and edit it 
                 # if you want to edit my code use nano <flie you want to edit>
 
