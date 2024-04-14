@@ -1,4 +1,4 @@
-// send data i2c
+// this code for uploed in your arduion
 #include <Wire.h>
 #include <VarSpeedServo.h>
 
