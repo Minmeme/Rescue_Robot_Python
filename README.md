@@ -1,7 +1,8 @@
 this code for rescue robot
+
 i use raspberry pi 4 and arduion mega 2560. you can use another arduion board
 for raspberry pi have 2 wedcam and connect i2c to arduion board to send data.
-#
+
 Precautions
 1. make sure your joystick connect with computer
 2. make sure your device connect the same wifi (pi and computer must be connect to the same wifi)
