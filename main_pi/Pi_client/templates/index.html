@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <title>RMRC CAMERA</title>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+            <h3 class="mt-5">Live Streaming</h3>
+            <p> <!-- camera show-->
+                <img src="{{ url_for('video_feed') }}" width=40%%">  
+                <q> 
+                    <img src="{{ url_for('video_feed1') }}" width=40%">
+                </q>
+            </p>
+
+            <table>
+                <tr>
+                    <th> <!--Joy show-->
+                        <h1>Joy show</h1> 
+                        <!-- <p>{{ g }}</p> -->
+                    </th>
+                    <th><!--Motor show-->
+                        <h1>Motor speed</h1>
+                    </th>
+                </tr>
+            </table>
+            
+    </body>
+</html>
