@@ -33,8 +33,9 @@ Set up
                 # if have error plz read error and edit it 
                 # if you want to edit my code use nano <flie you want to edit>
 
-    On mage :
-        don t forget uploed code
+     On mage :
+        1. uploed send_to_arduion.ino # don t forget uploed code
+        
 
 
  
