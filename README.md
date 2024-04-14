@@ -1,4 +1,4 @@
-this code for robot 's P-owen
+this code for rescue robot
 
 Precautions
 1. make sure your joystick connect with computer
