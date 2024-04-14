@@ -1,4 +1,5 @@
 // this code for uploed in your arduion
+// don t forget chenge my code to macth your robot
 #include <Wire.h>
 #include <VarSpeedServo.h>
 
