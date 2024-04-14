@@ -4,6 +4,7 @@ Precautions
 1. make sure your joystick connect with computer
 2. make sure your device connect the same wifi (pi and computer must be connect to the same wifi)
 3. cheak ip in Pi and computer in my code
+4. dowload my coed in your computer and your raspberry pi
 
 Set up
 
@@ -18,7 +19,7 @@ Set up
         2. connect Pi # use ssh
             - ssh <username>@<Pi-ip> -p port 
         3. run code
-            - cd your file addr # open folder
+            - cd your file addr/Rescue_Fn_test/main_pi/Pi_client # open folder
             - choose the code to run # if you want to run any code plz ctrl+C(stop code) and run new code
                 - python3 main-cam.py # this code for simple cam(no imagepro)
                 - python3 main-qr.py # this code for Qrcode detect
@@ -31,6 +32,5 @@ Set up
      On mage :
         1. uploed send_to_arduion.ino # don t forget chenge my code to macth your robot
         
-
 
  
