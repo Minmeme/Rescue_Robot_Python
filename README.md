@@ -17,8 +17,6 @@ Set up
         1. open cmd # make sure your pi and computer must be connect to the same wifi
         2. connect Pi # use ssh
             - ssh <username>@<Pi-ip> -p port 
-                use ssh Pi@192,168.0.59 -p 1111 # if there is enter the password. Pi is connect
-                if connect --> Pi@Pi:
         3. run code
             - cd Documents/Rescue_P-owen/fontend_pi # open folder
             - choose the code to run # if you want to run any code plz ctrl+C(stop code) and run new code
