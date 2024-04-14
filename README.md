@@ -32,7 +32,7 @@ Set up
                 # if you want to edit my code use nano <flie you want to edit>
 
      On mage :
-        1. uploed send_to_arduion.ino # don t forget uploed code
+        1. uploed send_to_arduion.ino # don t forget chenge my code to macth your robot
         
 
 
