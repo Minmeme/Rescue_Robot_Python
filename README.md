@@ -23,8 +23,6 @@ Set up
             - cd Documents/Rescue_P-owen/fontend_pi # open folder
             - choose the code to run # if you want to run any code plz ctrl+C(stop code) and run new code
                 - python3 main-cam.py # this code for simple cam(no imagepro)
-                - python3 main-detect_squarepy # this code for squarepy detect
-                - python3 main-imagepro.py # this code for imagepro (detect sign)
                 - python3 main-qr.py # this code for Qrcode detect
                 # if you run code is passes in output it have link to web(show camera) plz open link to see camera
                 # if you run code is passes plz ctrl+C to let pi connect to server.py but web is not off
