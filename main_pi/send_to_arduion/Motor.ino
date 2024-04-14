@@ -70,9 +70,6 @@ void MotorL(int Speed){
   }
  }
 
-void KaBL(int Speed){}
-void KaBR(int Speed){}
-
 void MotorStopAll(){
     digitalWrite(Ain1, LOW);
     digitalWrite(Ain2, LOW);
@@ -89,16 +86,4 @@ void MotorStopAll(){
     digitalWrite(Din1, LOW);
     digitalWrite(Din2, LOW);
     analogWrite(PwmD, 0);
-
-//    digitalWrite(Ein1, LOW);
-//    digitalWrite(Ein2, LOW);
-//    analogWrite(PwmE, 0);
-
-//    digitalWrite(Fin1, LOW);
-//    digitalWrite(Fin2, LOW);
-//    analogWrite(PwmF, 0);
-
-
-    
-  
   }
