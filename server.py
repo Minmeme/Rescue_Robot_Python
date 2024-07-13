@@ -1,153 +1,234 @@
-from smbus import SMBus
+import pygame
 import socket
 import time
 
-# make sure it same ip in server  
-HOST = '0.0.0.0'  # Change this to your computer IP
-PORT = 5000  # Change this to your desired port
+buttons = {'A':0,'B':0,'X':0,'Y':0,
+           'L1':0,'R1':0,'back':0,'start':0,'Center':0,
+           'ButtonL':0,'ButtonR':0,'L2':0,'R2':0,
+           'Hat_Up':0,'Hat_Down':0,'Hat_R':0,'Hat_L':0}
 
-I2C_ADDRESS = 0x8
-bus = SMBus(1)
-    
-def connect_to_server():
-    global client_socket, Button
-    try:
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((HOST, PORT))
-        # bus.write(I2C_ADDRESS, 0x100) # set servo
-        while True:
-            data = client_socket.recv(1024)
-            if not data:
-                break
-            Button = data.decode('utf-8')
-            print(Button)
-            #################################
-            if Button == 'A':
-                bus.write_byte(I2C_ADDRESS, 0x1)
-                print(Button)
+axiss=[0.,0.,0.,0.,0.,0.]
 
-            elif Button == 'B':
-                bus.write_byte(I2C_ADDRESS, 0x2)
-                print(Button)
+JSMode = False
+text1 = "Mode1 "
+text2 = "Mode2 "
 
-            elif Button == 'X':
-                bus.write_byte(I2C_ADDRESS, 0x3)
-                print(Button)
+pygame.init()
+controller = pygame.joystick.Joystick(0)
+controller.init()
 
-            elif Button == 'Y':
-                bus.write_byte(I2C_ADDRESS, 0x4)
-                print(Button)
- 
-            # #################################
-            elif Button == 'R1':
-                bus.write_byte(I2C_ADDRESS, 0x5)
-                print(Button)
+HOST = '192.168.0.236'  # Change this to your computer IP
+PORT = 5000 # Change this to your desired port
 
-            elif Button == 'R2':
-                bus.write_byte(I2C_ADDRESS, 0x6)
-                print(Button)
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_socket.bind((HOST, PORT))
+server_socket.listen()
+  
 
-            elif Button == 'L1':
-                bus.write_byte(I2C_ADDRESS, 0x7)
-                print(Button)
+def getJS(name=''): # this fn for joy
+    global buttons , JSMode
+    for event in pygame.event.get():
+        if event.type == pygame.JOYAXISMOTION:
+            axiss[event.axis] = round(event.value,2)
 
-            elif Button == 'L2':
-                bus.write_byte(I2C_ADDRESS, 0x9)
-                print(Button)
+        elif event.type == pygame.JOYBUTTONDOWN:
+            for x,(key,val) in enumerate(buttons.items()):
+                if x<=10:
+                    if controller.get_button(x): 
+                        buttons[key] = 1
 
-            # #################################
-            elif Button == 'Hat_Up':
-                bus.write_byte(I2C_ADDRESS, 0x10)
-                print(Button)
+            # if buttons['Center'] == 1:
+            #     JSMode = not JSMode
 
-            elif Button == 'Hat_Down':
-                bus.write_byte(I2C_ADDRESS, 0x11)
-                print(Button)
+        elif event.type == pygame.JOYBUTTONUP:
+            for x,(key,val) in enumerate(buttons.items()):
+                if x<=10:
+                    if event.button == x: 
+                        buttons[key] = 0     
+                        
+        elif event.type == pygame.JOYHATMOTION:
+            hat_x, hat_y = event.value
+            if hat_x == 0 and hat_y == 0:
+                buttons['Hat_Up'] = 0
+                buttons['Hat_Down'] = 0
+                buttons['Hat_R'] = 0
+                buttons['Hat_L'] = 0
+            elif hat_x == 1:
+                buttons['Hat_R'] = 1
+            elif hat_x == -1:
+                buttons['Hat_L'] = 1
+            elif hat_y == 1:
+                buttons['Hat_Up'] = 1
+            elif hat_y == -1:
+                buttons['Hat_Down'] = 1
+                        
+    buttons['ButtonLX'],buttons['ButtonLY'],buttons['ButtonRX'],buttons['ButtonRY'],buttons['L2'],buttons['R2'] = [axiss[0],axiss[1],axiss[3],axiss[4],axiss[2],axiss[5]]
+    if name == '':
+        return buttons
+    else:
+        return buttons[name]
 
-            elif Button == 'Hat_L':
-                bus.write_byte(I2C_ADDRESS, 0x12)
-                print(Button)
+def JSMode1(client_socket): # this fn for send data to client
+            if getJS('ButtonLY') == 1 and  getJS('ButtonRY') == 1: # Down Down
+                print(text1, "LY Down and RY Down")
+                client_socket.send("LYDown_and_RYDown".encode())
+            
+            elif getJS('ButtonLY') == -1 and  getJS('ButtonRY') == -1: # Up Up
+                print(text1, "LY Up and RY Up")
+                client_socket.send("LYUp_and_RYUp".encode())
 
-            elif Button == 'Hat_R':
-                bus.write_byte(I2C_ADDRESS, 0x13)
-                print(Button)
+            elif getJS('ButtonLY') == 1 and  getJS('ButtonRY') == -1: # Down Up
+                print(text1, "LY Down and RY Up")
+                client_socket.send("LYDown_and_RYUp".encode())
 
-            # #################################
-            elif Button == 'ButtonLX1':
-                bus.write_byte(I2C_ADDRESS, 0x14)
-                print(Button)
-
-            elif Button == 'ButtonLX-1':
-                bus.write_byte(I2C_ADDRESS, 0x15)
-                print(Button)
-
-            elif Button == 'ButtonLY1':
-                bus.write_byte(I2C_ADDRESS, 0x16)
-                print(Button)
-
-            elif Button == 'ButtonLY-1':
-                bus.write_byte(I2C_ADDRESS, 0x17)
-                print(Button)
+            elif getJS('ButtonLY') == -1 and  getJS('ButtonRY') == 1: # Up Down
+                print(text1, "LY Up and RY Down")
+                client_socket.send("LYUp_and_RYDown".encode())
 
             #################################
-            elif Button == 'ButtonRX1':
-                bus.write_byte(I2C_ADDRESS, 0x18)
-                print(Button)
+            # elif getJS('R1') == 1 and getJS('L1') == 1:
+            #     print(text1,"R1 and L1")
+            #     client_socket.send("R1_L1".encode())
 
-            elif Button == 'ButtonRX-1':
-                bus.write_byte(I2C_ADDRESS, 0x19)
-                print(Button)
+            # elif getJS('R2') == 1 and getJS('L2') == 1:
+            #     print(text1,"R2 and L2")
+            #     client_socket.send("R2_L2".encode())
+            
+            #################################
+            elif getJS('A') == 1:
+                print(text1, "A")  
+                client_socket.send("A".encode())
 
-            elif Button == 'ButtonRY1':
-                bus.write_byte(I2C_ADDRESS, 0x20)
-                print(Button)
+            elif getJS('B') == 1:
+                print(text1, "B")
+                client_socket.send("B".encode())
 
-            elif Button == 'ButtonRY-1':
-                bus.write_byte(I2C_ADDRESS, 0x21)
-                print(Button)
+            elif getJS('X') == 1:
+                print(text1, "X")
+                client_socket.send("X".encode())
+
+            elif getJS('Y') == 1:
+                print(text1, "Y")
+                client_socket.send("Y".encode())
 
             #################################
-            elif Button == 'ButtonRX-1':
-                bus.write_byte(I2C_ADDRESS, 0x22)
-                print(Button)
+            elif getJS('R1') == 1:
+                print(text1, "R1")
+                client_socket.send("R1".encode())
 
-            elif Button == 'ButtonRY1':
-                bus.write_byte(I2C_ADDRESS, 0x23)
-                print(Button)
+            elif getJS('R2') == 1:
+                print(text1, "R2")
+                client_socket.send("R2".encode())
 
-            ################################# LY and RY
-            elif Button == 'LYDown_and_RYDown':
-                bus.write_byte(I2C_ADDRESS, 0x24)
-                print(Button)
+            elif getJS('L1') == 1:
+                print(text1, "L1")
+                client_socket.send("L1".encode())
 
-            elif Button == 'LYUp_and_RYUp':
-                bus.write_byte(I2C_ADDRESS, 0x25)
-                print(Button)
-
-            elif Button == 'LYDown_and_RYUp':
-                bus.write_byte(I2C_ADDRESS, 0x26)
-                print(Button)
-
-            elif Button == 'LYUp_and_RYDown':
-                bus.write_byte(I2C_ADDRESS, 0x27)
-                print(Button)
+            elif getJS('L2') == 1:
+                print(text1, "L2")
+                client_socket.send("L2".encode())
 
             #################################
+            elif getJS('Hat_Up') == 1:
+                print(text1, "Hat_Up")
+                client_socket.send("Hat_Up".encode())
 
-            elif Button == 'ButtonL':
-                bus.write_byte(I2C_ADDRESS, 0x28)
-                print(Button)
+            elif getJS('Hat_Down') == 1:
+                print(text1, "Hat_Down")
+                client_socket.send("Hat_Down".encode())
 
-            elif Button == 'ButtonR':
-                bus.write_byte(I2C_ADDRESS, 0x29)
-                print(Button)
+            elif getJS('Hat_L') == 1:
+                print(text1, "Hat_L")
+                client_socket.send("Hat_L".encode())
 
-            # #################################
-            elif Button == 'Stop':
-                bus.write_byte(I2C_ADDRESS, 0x100)
-                print(Button)
+            elif getJS('Hat_R') == 1:
+                print(text1, "Hat_R")
+                client_socket.send("Hat_R".encode())
 
-    except Exception as e:
-        print("An error occurred:",e)
+            #################################
+            elif getJS('ButtonLX') == 1:
+                print(text1, "ButtonLX")
+                client_socket.send("ButtonLX1".encode())
 
-connect_to_server()
+            elif getJS('ButtonLX') == -1:
+                print(text1, "ButtonLX-1")
+                client_socket.send("ButtonLX-1".encode())
+
+            elif getJS('ButtonLY') == 1:
+                print(text1, "ButtonLY1")
+                client_socket.send("ButtonLY1".encode())
+
+            elif getJS('ButtonLY') == -1:
+                print(text1, "ButtonLY-1")
+                client_socket.send("ButtonLY-1".encode())
+            
+
+            #################################
+            elif getJS('ButtonRX') == 1:
+                print(text1, "ButtonRX")
+                client_socket.send("ButtonRX1".encode())
+
+            elif getJS('ButtonRX') == -1:
+                print(text1, "ButtonRX-1")
+                client_socket.send("ButtonRX-1".encode())
+
+            elif getJS('ButtonRY') == 1:
+                print(text1, "ButtonRY1")
+                client_socket.send("ButtonRY1".encode())
+
+            elif getJS('ButtonRY') == -1:
+                print(text1, "ButtonRY-1")
+                client_socket.send("ButtonRY-1".encode())
+
+            #################################
+            elif getJS('start') == 1:
+                print(text1, "start")
+                client_socket.send("start".encode())
+
+            elif getJS('back') == 1:
+                print(text1, "back")
+                client_socket.send("back".encode())
+
+            ##################################
+            elif getJS('ButtonL') == 1:
+                print(text1, "ButtonL")
+                client_socket.send("ButtonL".encode())
+
+            elif getJS('ButtonR') == 1:
+                print(text1, "ButtonR")
+                client_socket.send("ButtonR".encode())
+
+            ##################################
+            elif getJS('Center') == 1:
+                print('Center')
+                client_socket.send("CT".encode())
+            else:
+                print("Stop")
+                client_socket.send("Stop".encode())
+
+            time.sleep(0.05)
+
+# def JSMode2(client_socket):
+#             if getJS('A') == 1:
+#                 print("Mode2 A")
+#                 client_socket.send("Mode2 A".encode())
+
+#             else:
+#                 print("Mode2 Stop")
+#                 client_socket.send("Stop".encode())
+#             time.sleep(0.05)
+
+
+def main(client_socket):
+    while True:
+        # if JSMode:
+            JSMode1(client_socket)
+        #################################
+        # else:
+        #     JSMode2(client_socket)
+            
+
+
+print("SERVER START...")
+client_socket, addr = server_socket.accept()
+main(client_socket)
